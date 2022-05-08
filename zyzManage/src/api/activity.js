@@ -5,7 +5,8 @@ const api = {
   activity: 'api.stock.get', // 获取项目列表
   activityAdd: 'api.stock.add', // 添加项目
   activitySet: 'api.stock.set', // 修改项目
-  activityDel: 'api.stock.del' // 删除项目
+  activityDel: 'api.stock.del', // 删除项目
+  activityDetail: 'api.stock.content.get' // 项目详情
 }
 
 // 获取项目列表
@@ -51,6 +52,18 @@ export function activityDelApi(parameter) {
     method: 'POST',
     data: {
       action: api.activityDel,
+      params: parameter
+    }
+  })
+}
+
+// 详情
+export function activityDetailApi(parameter) {
+  return request({
+    url: 'index.php/api',
+    method: 'POST',
+    data: {
+      action: api.activityDetail,
       params: parameter
     }
   })

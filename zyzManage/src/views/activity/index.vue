@@ -16,6 +16,10 @@
         <template slot="image" slot-scope="image">
           <a-button type="link" @click="viewCover(image)">预览</a-button>
         </template>
+        <!-- 详情 -->
+        <template slot="detail" slot-scope="record">
+          <a-button type="link" @click="openDetail(record)">查看</a-button>
+        </template>
 
         <template slot="operate" slot-scope="record">
           <a-button v-if="userInfo.admin != 1" type="link" size="small" @click="openApplyRemark(record)">报名</a-button>
@@ -30,6 +34,9 @@
 
     <!-- 报名-备注 -->
     <ApplyRemark v-if="applyDialog.visible" :applyDialog="applyDialog" @CLOSE_EVENT="closeApply"></ApplyRemark>
+
+    <!-- 新闻详情 -->
+    <ActivityDetail v-if="detailDialog.visible" :detailDialog="detailDialog" @CLOSE_EVENT="closeDetail"></ActivityDetail>
 
     <!-- 图片预览 start -->
     <a-modal :visible="coverDialog.visible" :footer="null" @cancel="closeCover">
@@ -46,12 +53,14 @@
 import { mapState } from 'vuex'
 import EditActivity from './components/EditActivity'
 import ApplyRemark from './components/ApplyRemark'
+import ActivityDetail from './components/ActivityDetail'
 import { activityApi, activityDelApi } from '@/api/activity'
 export default {
   name: 'Activity',
   components: {
     EditActivity,
-    ApplyRemark
+    ApplyRemark,
+    ActivityDetail
   },
   data() {
     return {
@@ -94,6 +103,11 @@ export default {
           scopedSlots: { customRender: 'score' }
         },
         {
+          title: '详情',
+          align: 'center',
+          scopedSlots: { customRender: 'detail' }
+        },
+        {
           title: '操作',
           align: 'center',
           width: 120,
@@ -120,6 +134,10 @@ export default {
         visible: false,
         id: '',
         userid: ''
+      },
+      detailDialog: {
+        visible: false,
+        id: ''
       }
     }
   },
@@ -233,6 +251,15 @@ export default {
     },
     closeCover() {
       this.coverDialog.visible = false
+    },
+
+    // 打开详情
+    openDetail(record) {
+      this.detailDialog.visible = true
+      this.detailDialog.id = record.id
+    },
+    closeDetail() {
+      this.detailDialog.visible = false
     },
 
     // 页码，页码值改变时

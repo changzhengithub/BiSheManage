@@ -85,7 +85,6 @@ const empower = {
       const { permissionList } = res
       return new Promise(resolve => {
         const routerList = filterAsyncRouter(asyncRouterMap, permissionList)
-        console.log(routerList)
         routerList.push({
           path: '*',
           redirect: '/exception',
